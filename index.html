@@ -10,10 +10,21 @@
     />
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
 
     <style>
       html {
         scroll-behavior: smooth;
+        scroll-snap-type: y mandatory;
+        scroll-padding-top: 80px;
+      }
+
+      .snap-section {
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
       }
 
       body {
@@ -37,14 +48,24 @@
         -webkit-backdrop-filter: blur(18px);
       }
 
-      .banner {
-        width: 100%;
-        max-height: 360px;
-        object-fit: cover;
+      .hero {
+        min-height: 55vh;
+      }
+
+      .hero-bg {
         object-position: center;
-        border: 1px solid rgba(148, 163, 184, 0.18);
-        border-radius: 1.5rem;
-        box-shadow: 0 24px 80px rgba(15, 23, 42, 0.45);
+      }
+
+      .hero-overlay {
+        background:
+          linear-gradient(
+            90deg,
+            rgba(2, 6, 23, 0.96) 0%,
+            rgba(2, 6, 23, 0.82) 38%,
+            rgba(2, 6, 23, 0.35) 70%,
+            rgba(2, 6, 23, 0.55) 100%
+          ),
+          linear-gradient(0deg, rgba(2, 6, 23, 0.9) 0%, rgba(2, 6, 23, 0) 30%);
       }
 
       .section-heading {
@@ -53,7 +74,7 @@
 
       .project-card,
       .experience-card,
-      .skill {
+      .skill-card {
         transition:
           transform 180ms ease,
           border-color 180ms ease,
@@ -68,9 +89,54 @@
         box-shadow: 0 20px 50px rgba(2, 6, 23, 0.35);
       }
 
-      .skill:hover {
+      .skill-card {
+        display: inline-block;
+      }
+
+      .skill-card:hover {
+        transform: scale(1.08);
+        border-color: rgba(96, 165, 250, 0.55);
         background: rgba(30, 41, 59, 0.9);
-        border-color: rgba(96, 165, 250, 0.45);
+        color: #fff;
+      }
+
+      .architecture-card {
+        transition:
+          border-color 180ms ease,
+          background-color 180ms ease,
+          transform 180ms ease;
+      }
+
+      .architecture-card:hover {
+        border-color: rgba(96, 165, 250, 1);
+        background: rgba(30, 41, 59, 0.75);
+        transform: translateX(2px);
+      }
+
+      .project-details {
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
+        transition:
+          grid-template-rows 260ms ease,
+          opacity 200ms ease;
+      }
+
+      .project-details > div {
+        overflow: hidden;
+      }
+
+      .project-card.is-open .project-details {
+        grid-template-rows: 1fr;
+        opacity: 1;
+      }
+
+      .project-toggle svg {
+        transition: transform 220ms ease;
+      }
+
+      .project-card.is-open .project-toggle svg {
+        transform: rotate(180deg);
       }
     </style>
   </head>
@@ -82,155 +148,115 @@
       >
         <a
           href="#top"
-          class="text-base font-bold tracking-tight text-white transition hover:text-blue-300"
+          class="text-base sm:text-4xl font-bold tracking-tight text-white transition hover:text-blue-300"
         >
-          Chaitanya<span class="text-blue-400">.</span>
+          Chaitanya Joshi
         </a>
         <div class="hidden items-center gap-7 text-sm text-slate-400 sm:flex">
-          <a href="#about" class="transition hover:text-white">About</a>
           <a href="#experience" class="transition hover:text-white"
             >Experience</a
           >
           <a href="#projects" class="transition hover:text-white">Projects</a>
-          <a href="#contact" class="transition hover:text-white">Contact</a>
+          <a href="#skills" class="transition hover:text-white">Skills</a>
         </div>
-
-        <a
-          href="https://www.linkedin.com/in/chaitanyajoshi5"
-          target="_blank"
-          rel="noreferrer"
-          class="rounded-full border border-blue-400/30 bg-blue-400/10 px-4 py-2 text-xs font-semibold text-blue-300 transition hover:border-blue-300/60 hover:bg-blue-400/20"
-        >
-          Let's connect
-        </a>
       </div>
     </nav>
 
     <main id="top">
-      <!-- Hero -->
-      <header class="mx-auto max-w-6xl px-6 pb-24 pt-12 sm:pt-20">
-        <div class="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div>
-            <div
-              class="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-sm text-emerald-300"
-            >
-              <span
-                class="h-2 w-2 animate-pulse rounded-full bg-emerald-400"
-              ></span>
-              Available for interesting opportunities
-            </div>
+      <header class="hero snap-section relative overflow-hidden">
+        <img
+          class="hero-bg absolute inset-0 h-full w-full object-contain"
+          src="./banner.png"
+          alt="Chaitanya Joshi"
+        />
+        <div class="hero-overlay absolute inset-0"></div>
 
-            <p
-              class="mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-blue-400"
-            >
-              Senior Full-Stack Engineer
-            </p>
-
-            <h1
-              class="max-w-3xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-6xl"
-            >
-              Building scalable products and reliable cloud systems.
-            </h1>
-
-            <p class="mt-6 max-w-2xl text-lg leading-relaxed text-slate-400">
-              11+ years of experience building full-stack applications with
-              Node.js, React, TypeScript and AWS, with a focus on scalable
-              architecture, reliability and engineering quality.
-            </p>
-
-            <div class="mt-8 flex flex-wrap gap-4">
-              <a
-                href="#projects"
-                class="rounded-xl bg-blue-500 px-5 py-3 font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:bg-blue-400"
-              >
-                View projects
-              </a>
-
-              <a
-                href="https://www.linkedin.com/in/chaitanyajoshi5"
-                target="_blank"
-                rel="noreferrer"
-                class="rounded-xl border border-slate-700 bg-slate-900/50 px-5 py-3 font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
-              >
-                LinkedIn profile
-              </a>
-            </div>
-
-            <div
-              class="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-500"
-            >
-              <span>📍 Pune, India</span>
-              <span>⚡ Node.js · React · AWS</span>
-              <span>🧩 Distributed systems</span>
-            </div>
+        <div
+          class="relative mx-auto max-w-6xl px-6 py-24 sm:py-32"
+          data-aos="fade"
+          data-aos-duration="1500"
+          data-aos-delay="750"
+        >
+          <div
+            class="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-sm text-emerald-300"
+          >
+            <span
+              class="h-2 w-2 animate-pulse rounded-full bg-emerald-400"
+            ></span>
+            Available for interesting opportunities
           </div>
 
-          <div class="relative">
-            <div
-              class="absolute -inset-4 rounded-[2rem] bg-blue-500/10 blur-3xl"
-            ></div>
-            <img
-              class="banner relative"
-              src="./banner.png"
-              alt="Chaitanya Joshi"
-            />
+          <p
+            class="mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-blue-400 sm:text-xl"
+          >
+            Senior Full-Stack Engineer
+          </p>
+
+          <h1
+            class="max-w-6xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl"
+          >
+            Building scalable products and reliable cloud systems
+          </h1>
+
+          <p class="mt-6 max-w-7xl text-lg leading-relaxed text-slate-400">
+            I've spent 11 years building distributed systems that stay boring in
+            production — event-driven architectures that keep processing
+            correctly at scale, and platform migrations that cut infrastructure
+            costs without anyone noticing the switch. I like owning ambiguous
+            problems end-to-end: making the architecture call, writing the code,
+            and staying accountable when it hits production. When deadlines slip
+            or leadership gaps open up, I'm usually the one who steps in to hold
+            the team together and keep scope honest with stakeholders. Lately
+            that also means using AI-assisted tools deliberately — not to cut
+            corners, but to move faster on the parts that don't need a human's
+            judgment.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a
+              href="#projects"
+              class="rounded-xl bg-blue-500 px-5 py-3 font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:bg-blue-400"
+            >
+              View projects
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/chaitanyajoshi5"
+              target="_blank"
+              rel="noreferrer"
+              class="rounded-xl border border-slate-700 bg-slate-900/50 px-5 py-3 font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+            >
+              LinkedIn profile
+            </a>
+
+            <a
+              href="https://github.com/joshichaitanya"
+              target="_blank"
+              rel="noreferrer"
+              class="rounded-xl border border-slate-700 bg-slate-900/50 px-5 py-3 font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+            >
+              GitHub profile
+            </a>
+          </div>
+
+          <div
+            class="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-500"
+          >
+            <span>📍 Pune, India</span>
+            <span>⚡ Node.js · React · AWS</span>
+            <span>🧩 Distributed systems</span>
           </div>
         </div>
       </header>
 
-      <!-- About -->
-      <section id="about" class="border-t border-slate-800/80">
-        <div class="mx-auto max-w-6xl px-6 py-24">
-          <div class="max-w-3xl">
-            <p
-              class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400"
-            >
-              About me
-            </p>
-            <h2
-              class="section-heading text-3xl font-bold text-white sm:text-4xl"
-            >
-              Thoughtful engineering, built for the real world.
-            </h2>
-
-            <p class="mt-6 leading-relaxed text-slate-400">
-              I enjoy solving complex engineering problems, designing
-              distributed systems and turning ambiguous requirements into
-              maintainable, production-ready software.
-            </p>
-          </div>
-
-          <div class="mt-10 flex flex-wrap gap-3">
-            <span
-              class="skill rounded-xl border border-slate-800 bg-slate-900/70 px-4 py-2.5 text-sm text-slate-300"
-              >Node.js</span
-            >
-            <span
-              class="skill rounded-xl border border-slate-800 bg-slate-900/70 px-4 py-2.5 text-sm text-slate-300"
-              >TypeScript</span
-            >
-            <span
-              class="skill rounded-xl border border-slate-800 bg-slate-900/70 px-4 py-2.5 text-sm text-slate-300"
-              >React</span
-            >
-            <span
-              class="skill rounded-xl border border-slate-800 bg-slate-900/70 px-4 py-2.5 text-sm text-slate-300"
-              >AWS</span
-            >
-            <span
-              class="skill rounded-xl border border-slate-800 bg-slate-900/70 px-4 py-2.5 text-sm text-slate-300"
-              >GraphQL</span
-            >
-            <span
-              class="skill rounded-xl border border-slate-800 bg-slate-900/70 px-4 py-2.5 text-sm text-slate-300"
-              >Microservices</span
-            >
-          </div>
-        </div>
-      </section>
-
       <!-- Experience -->
-      <section id="experience" class="border-t border-slate-800/80">
+      <section
+        id="experience"
+        class="snap-section border-t border-slate-800/80"
+        data-aos="fade"
+        data-aos-duration="1500"
+        data-aos-delay="300"
+      >
         <div class="mx-auto max-w-6xl px-6 py-24">
           <p
             class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400"
@@ -241,54 +267,123 @@
             Experience
           </h2>
 
-          <div class="mt-12 space-y-6">
+          <div class="mt-10 grid gap-4 sm:grid-cols-2">
             <div
-              class="experience-card rounded-2xl border border-slate-800 bg-slate-900/50 p-6 sm:p-8"
+              class="experience-card rounded-2xl border border-slate-800 bg-slate-900/50 p-5"
             >
               <div
                 class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
               >
                 <div>
-                  <p class="text-sm font-medium text-blue-400">Mindera</p>
-                  <h3 class="mt-1 text-xl font-semibold text-white">
-                    Senior Software Developer
-                  </h3>
+                  <p class="text-base font-medium text-blue-400">Mindera</p>
+                  <div class="mt-1 flex flex-wrap items-center gap-2">
+                    <h3 class="text-xl font-semibold text-white">
+                      Software Engineer
+                    </h3>
+                    <span
+                      class="inline-flex w-fit items-center rounded-full border border-blue-400/30 bg-blue-400/10 px-2.5 py-0.5 text-xs font-semibold text-blue-300"
+                    >
+                      Senior / Lead Scope
+                    </span>
+                  </div>
                 </div>
                 <span
-                  class="rounded-full border border-slate-700 px-3 py-1 text-sm text-slate-400"
+                  class="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-400"
                 >
                   2022 — Present
                 </span>
               </div>
 
-              <p class="mt-5 max-w-3xl leading-relaxed text-slate-400">
-                Building scalable pricing and data-processing systems using
-                Node.js, TypeScript, AWS, SQS, Step Functions and GraphQL.
+              <p class="mt-4 leading-relaxed text-slate-400">
+                Building scalable, event-driven pricing and data-processing
+                systems using Node.js, DynamoDB, AWS (SQS, Step Functions, CDK)
+                and GraphQL.
               </p>
             </div>
 
             <div
-              class="experience-card rounded-2xl border border-slate-800 bg-slate-900/50 p-6 sm:p-8"
+              class="experience-card rounded-2xl border border-slate-800 bg-slate-900/50 p-5"
             >
               <div
                 class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
               >
                 <div>
-                  <p class="text-sm font-medium text-blue-400">Syngenta</p>
-                  <h3 class="mt-1 text-xl font-semibold text-white">
-                    Full-Stack Developer
-                  </h3>
+                  <p class="text-base font-medium text-blue-400">Syngenta</p>
+                  <div class="mt-1 flex flex-wrap items-center gap-2">
+                    <h3 class="text-xl font-semibold text-white">
+                      Developer - Frontend 4B
+                    </h3>
+                    <span
+                      class="inline-flex w-fit items-center rounded-full border border-blue-400/30 bg-blue-400/10 px-2.5 py-0.5 text-xs font-semibold text-blue-300"
+                    >
+                      Senior, Full Stack
+                    </span>
+                  </div>
                 </div>
                 <span
-                  class="rounded-full border border-slate-700 px-3 py-1 text-sm text-slate-400"
+                  class="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-400"
                 >
                   2019 — 2022
                 </span>
               </div>
 
-              <p class="mt-5 max-w-3xl leading-relaxed text-slate-400">
-                Built cloud-native applications and large-scale mapping
-                experiences using React, Node.js and AWS.
+              <p class="mt-4 leading-relaxed text-slate-400">
+                Building map-heavy, large-scale frontend applications using
+                React, Leaflet.js, Node.js and PostgreSQL.
+              </p>
+            </div>
+
+            <div
+              class="experience-card rounded-2xl border border-slate-800 bg-slate-900/50 p-5"
+            >
+              <div
+                class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
+              >
+                <div>
+                  <p class="text-base font-medium text-blue-400">
+                    Mindstix Software Labs
+                  </p>
+                  <h3 class="mt-1 text-xl font-semibold text-white">
+                    Member of the Technical Staff
+                  </h3>
+                </div>
+                <span
+                  class="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-400"
+                >
+                  2016 — 2019
+                </span>
+              </div>
+
+              <p class="mt-4 leading-relaxed text-slate-400">
+                Building performant micro-frontend architectures using React,
+                TypeScript and Node.js (BFF) for high-traffic e-commerce.
+              </p>
+            </div>
+
+            <div
+              class="experience-card rounded-2xl border border-slate-800 bg-slate-900/50 p-5"
+            >
+              <div
+                class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
+              >
+                <div>
+                  <p class="text-base font-medium text-blue-400">
+                    Neeti Solutions
+                  </p>
+                  <h3 class="mt-1 text-xl font-semibold text-white">
+                    Software Engineer
+                  </h3>
+                </div>
+                <span
+                  class="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-400"
+                >
+                  2014 — 2016
+                </span>
+              </div>
+
+              <p class="mt-4 leading-relaxed text-slate-400">
+                Building backend API frameworks and data-ingestion pipelines
+                using Java, Spring and MySQL.
               </p>
             </div>
           </div>
@@ -296,7 +391,13 @@
       </section>
 
       <!-- Projects -->
-      <section id="projects" class="border-t border-slate-800/80">
+      <section
+        id="projects"
+        class="snap-section border-t border-slate-800/80"
+        data-aos="fade"
+        data-aos-duration="1500"
+        data-aos-delay="300"
+      >
         <div class="mx-auto max-w-6xl px-6 py-24">
           <p
             class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400"
@@ -307,22 +408,24 @@
             Projects
           </h2>
 
-          <div class="mt-12 grid gap-6 md:grid-cols-2">
+          <div class="mt-12 space-y-6">
             <article
-              class="project-card flex flex-col rounded-2xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8"
+              class="project-card rounded-2xl border border-slate-800 bg-slate-900/50 p-6 sm:p-8"
             >
-              <div class="flex items-center justify-between gap-4">
-                <p class="text-sm font-semibold text-blue-400">
-                  Personal project
-                </p>
-                <span class="text-xl text-slate-600">01</span>
+              <div
+                class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
+              >
+                <h3 class="text-xl font-semibold text-white">
+                  Distributed Pricing Platform
+                </h3>
+                <span
+                  class="inline-flex w-fit shrink-0 items-center rounded-full border border-blue-400/30 bg-blue-400/10 px-2.5 py-0.5 text-xs font-semibold text-blue-300"
+                >
+                  Professional Project
+                </span>
               </div>
 
-              <h3 class="mt-5 text-2xl font-semibold text-white">
-                Scalable Event Processing Platform
-              </h3>
-
-              <p class="mt-4 flex-1 leading-relaxed text-slate-400">
+              <p class="mt-5 max-w-6xl leading-relaxed text-slate-400">
                 A production-style event processing system demonstrating queues,
                 retries, idempotency, caching, observability and AWS-based
                 architecture.
@@ -342,31 +445,126 @@
                 >
               </div>
 
-              <a
-                href="#"
-                class="mt-8 inline-flex items-center font-semibold text-blue-400 transition hover:text-blue-300"
+              <div class="project-details mt-4">
+                <div>
+                  <ul
+                    class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-400"
+                  >
+                    <li>
+                      Owned the pricing service end-to-end — a distributed,
+                      event-driven platform (S3, SQS, Step Functions, DynamoDB
+                      Streams) processing 20K+ daily transactions and 500K
+                      international price records with zero data loss.
+                    </li>
+                    <li>
+                      Personally built and maintained 10+ of the platform's 20
+                      microservices — including a product-search microservice on
+                      Elasticsearch — provisioned via AWS CDK, working within an
+                      8-10 person squad.
+                    </li>
+                    <li>
+                      Designed and federated GraphQL schemas via Apollo
+                      Supergraph across microservices, enabling unified API
+                      consumption for downstream teams.
+                    </li>
+                    <li>
+                      Spearheaded an independent cross-team initiative to
+                      migrate the pricing service off 3 legacy Oracle-backed
+                      provider APIs onto OpenSearch, negotiating schema changes
+                      with the owning team to eliminate slow, retry-prone vendor
+                      calls.
+                    </li>
+                    <li>
+                      Cut per-price processing time ~30% and failure rate ~5%
+                      via the OpenSearch migration, and introduced Redis-based
+                      caching for tax/duty calculations — together reducing
+                      monthly cloud spend for the pricing platform by ~40%.
+                    </li>
+                    <li>
+                      Established CloudWatch monitoring/alerting standards
+                      sustaining 99.9% uptime; enforced SonarQube quality gates,
+                      incorporated AI-assisted development (Claude Code, Cursor)
+                      into the review workflow, and maintained 80% Jest test
+                      coverage.
+                    </li>
+                    <li>
+                      Identified rising security debt at a retro and proposed a
+                      weekly Dependabot remediation cadence; the practice was
+                      adopted org-wide, reducing per-service vulnerability count
+                      to &lt;5%.
+                    </li>
+                    <li>
+                      Assumed full technical ownership of the project for 2–3
+                      months during the team lead's unplanned leave, then
+                      independently sustained delivery through a cost-reduction
+                      restructuring.
+                    </li>
+                    <li>
+                      Mentored 3 engineers through onboarding, pairing, and
+                      monthly 1:1 career guidance.
+                    </li>
+                  </ul>
+
+                  <!--
+                  <figure class="mt-6">
+                    <img
+                      src="./pricing-architecture-diagram.png"
+                      alt="Distributed Pricing Platform architecture diagram"
+                      class="w-full rounded-xl border border-slate-800"
+                    />
+                    <figcaption
+                      class="mt-2 text-xs text-slate-500"
+                    >
+                      High-level architecture: event-driven pricing pipeline
+                      across S3, SQS, Step Functions and DynamoDB Streams.
+                    </figcaption>
+                  </figure>
+                  -->
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="project-toggle mt-6 inline-flex items-center gap-2 rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-blue-400/60 hover:text-blue-300"
+                aria-expanded="false"
               >
-                View project <span class="ml-2">→</span>
-              </a>
+                <span class="toggle-label">View details</span>
+                <svg
+                  class="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M5 7.5L10 12.5L15 7.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
             </article>
 
             <article
-              class="project-card flex flex-col rounded-2xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8"
+              class="project-card rounded-2xl border border-slate-800 bg-slate-900/50 p-6 sm:p-8"
             >
-              <div class="flex items-center justify-between gap-4">
-                <p class="text-sm font-semibold text-blue-400">
-                  Personal project
-                </p>
-                <span class="text-xl text-slate-600">02</span>
+              <div
+                class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
+              >
+                <h3 class="text-xl font-semibold text-white">
+                  Large-Scale Crop Mapping Platform
+                </h3>
+                <span
+                  class="inline-flex w-fit shrink-0 items-center rounded-full border border-blue-400/30 bg-blue-400/10 px-2.5 py-0.5 text-xs font-semibold text-blue-300"
+                >
+                  Professional Project
+                </span>
               </div>
 
-              <h3 class="mt-5 text-2xl font-semibold text-white">
-                AI-Powered Engineering Assistant
-              </h3>
-
-              <p class="mt-4 flex-1 leading-relaxed text-slate-400">
-                An AI-assisted developer tool focused on practical engineering
-                workflows, structured context, code analysis and automation.
+              <p class="mt-5 max-w-6xl leading-relaxed text-slate-400">
+                A map-heavy platform helping growers track tens of millions of
+                plot records at scale, shipped ahead of a fixed pre-spring
+                harvest deadline.
               </p>
 
               <div class="mt-6 flex flex-wrap gap-2 text-xs text-slate-400">
@@ -381,65 +579,274 @@
                 <span class="rounded-full bg-slate-800 px-3 py-1.5">AWS</span>
               </div>
 
-              <a
-                href="#"
-                class="mt-8 inline-flex items-center font-semibold text-blue-400 transition hover:text-blue-300"
+              <div class="project-details mt-4">
+                <div>
+                  <ul
+                    class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-400"
+                  >
+                    <li>
+                      Led a 5-person frontend team as most senior engineer to
+                      deliver a map-heavy crop management platform ahead of a
+                      fixed pre-spring harvest deadline.
+                    </li>
+                    <li>
+                      Negotiated MVP scope with design/business stakeholders to
+                      protect the timeline, and unblocked mid-level engineers
+                      via pair programming and structured refinement ceremonies.
+                    </li>
+                    <li>
+                      Co-owned the highest-risk Leaflet.js module and engineered
+                      viewport-based map/list synchronization to eliminate
+                      browser freezing at scale for a data-heavy mapping
+                      interface.
+                    </li>
+                    <li>
+                      Shipped on time to 30K+ growers managing up to 1,000 plots
+                      each (tens of millions of plot records), sustained through
+                      frontend caching, memoization, and virtualization.
+                    </li>
+                    <li>
+                      Raised data reliability by 25% by automating commodity
+                      pricing sync via CRON jobs from third-party APIs.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="project-toggle mt-6 inline-flex items-center gap-2 rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-blue-400/60 hover:text-blue-300"
+                aria-expanded="false"
               >
-                View project <span class="ml-2">→</span>
-              </a>
+                <span class="toggle-label">View details</span>
+                <svg
+                  class="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M5 7.5L10 12.5L15 7.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- Contact -->
-      <section id="contact" class="border-t border-slate-800/80">
+      <!-- Skills -->
+      <section
+        id="skills"
+        class="snap-section border-t border-slate-800/80"
+        data-aos="fade"
+        data-aos-duration="1500"
+        data-aos-delay="300"
+      >
         <div class="mx-auto max-w-6xl px-6 py-24">
-          <div
-            class="rounded-3xl border border-blue-400/20 bg-gradient-to-br from-blue-500/15 via-slate-900/70 to-slate-900/70 p-8 sm:p-12"
+          <p
+            class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400"
           >
+            Toolbox
+          </p>
+          <h2 class="section-heading text-3xl font-bold text-white sm:text-4xl">
+            Skills
+          </h2>
+
+          <div class="mt-10 flex flex-wrap gap-2.5">
+            <!-- Languages & Frameworks — blue -->
+            <span
+              class="skill-card rounded-full border border-blue-400/30 bg-blue-400/5 px-4 py-2 text-base text-blue-300"
+              >Node.js</span
+            >
+            <span
+              class="skill-card rounded-full border border-blue-400/30 bg-blue-400/5 px-4 py-2 text-base text-blue-300"
+              >ReactJS</span
+            >
+            <span
+              class="skill-card rounded-full border border-blue-400/30 bg-blue-400/5 px-4 py-2 text-base text-blue-300"
+              >TypeScript</span
+            >
+            <span
+              class="skill-card rounded-full border border-blue-400/30 bg-blue-400/5 px-4 py-2 text-base text-blue-300"
+              >Express</span
+            >
+            <span
+              class="skill-card rounded-full border border-blue-400/30 bg-blue-400/5 px-4 py-2 text-base text-blue-300"
+              >NextJS</span
+            >
+            <span
+              class="skill-card rounded-full border border-blue-400/30 bg-blue-400/5 px-4 py-2 text-base text-blue-300"
+              >Angular</span
+            >
+            <span
+              class="skill-card rounded-full border border-blue-400/30 bg-blue-400/5 px-4 py-2 text-base text-blue-300"
+              >Java Spring</span
+            >
+
+            <!-- Frontend & UI — sky -->
+            <span
+              class="skill-card rounded-full border border-sky-400/30 bg-sky-400/5 px-4 py-2 text-base text-sky-300"
+              >HTML5/CSS3</span
+            >
+            <span
+              class="skill-card rounded-full border border-sky-400/30 bg-sky-400/5 px-4 py-2 text-base text-sky-300"
+              >Material UI</span
+            >
+
+            <!-- APIs & Backend — violet -->
+            <span
+              class="skill-card rounded-full border border-violet-400/30 bg-violet-400/5 px-4 py-2 text-base text-violet-300"
+              >REST APIs</span
+            >
+            <span
+              class="skill-card rounded-full border border-violet-400/30 bg-violet-400/5 px-4 py-2 text-base text-violet-300"
+              >GraphQL</span
+            >
+
+            <!-- Cloud & Infrastructure (AWS) — orange -->
+            <span
+              class="skill-card rounded-full border border-orange-400/30 bg-orange-400/5 px-4 py-2 text-base text-orange-300"
+              >Lambda</span
+            >
+            <span
+              class="skill-card rounded-full border border-orange-400/30 bg-orange-400/5 px-4 py-2 text-base text-orange-300"
+              >S3</span
+            >
+            <span
+              class="skill-card rounded-full border border-orange-400/30 bg-orange-400/5 px-4 py-2 text-base text-orange-300"
+              >API Gateway</span
+            >
+            <span
+              class="skill-card rounded-full border border-orange-400/30 bg-orange-400/5 px-4 py-2 text-base text-orange-300"
+              >EC2</span
+            >
+            <span
+              class="skill-card rounded-full border border-orange-400/30 bg-orange-400/5 px-4 py-2 text-base text-orange-300"
+              >CloudWatch</span
+            >
+            <span
+              class="skill-card rounded-full border border-orange-400/30 bg-orange-400/5 px-4 py-2 text-base text-orange-300"
+              >CDK</span
+            >
+
+            <!-- Data, Search & Messaging — emerald -->
+            <span
+              class="skill-card rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-base text-emerald-300"
+              >DynamoDB</span
+            >
+            <span
+              class="skill-card rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-base text-emerald-300"
+              >PostgreSQL</span
+            >
+            <span
+              class="skill-card rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-base text-emerald-300"
+              >MongoDB</span
+            >
+            <span
+              class="skill-card rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-base text-emerald-300"
+              >Redis</span
+            >
+            <span
+              class="skill-card rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-base text-emerald-300"
+              >Elasticsearch</span
+            >
+            <span
+              class="skill-card rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-base text-emerald-300"
+              >SQS</span
+            >
+            <span
+              class="skill-card rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-base text-emerald-300"
+              >SNS</span
+            >
+            <span
+              class="skill-card rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-base text-emerald-300"
+              >Step Functions</span
+            >
+            <span
+              class="skill-card rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-base text-emerald-300"
+              >Kafka</span
+            >
+
+            <!-- Engineering & DevOps — pink -->
+            <span
+              class="skill-card rounded-full border border-pink-400/30 bg-pink-400/5 px-4 py-2 text-base text-pink-300"
+              >Jest</span
+            >
+            <span
+              class="skill-card rounded-full border border-pink-400/30 bg-pink-400/5 px-4 py-2 text-base text-pink-300"
+              >Docker</span
+            >
+            <span
+              class="skill-card rounded-full border border-pink-400/30 bg-pink-400/5 px-4 py-2 text-base text-pink-300"
+              >GitHub Actions</span
+            >
+            <span
+              class="skill-card rounded-full border border-pink-400/30 bg-pink-400/5 px-4 py-2 text-base text-pink-300"
+              >Claude</span
+            >
+          </div>
+
+          <div class="mt-16">
             <p
-              class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-blue-300"
+              class="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500"
             >
-              Get in touch
+              Beyond the toolset
             </p>
+            <h3 class="text-xl font-semibold text-white">Architecture</h3>
 
-            <h2
-              class="section-heading max-w-2xl text-3xl font-bold text-white sm:text-4xl"
-            >
-              Let's build something reliable and useful.
-            </h2>
-
-            <p class="mt-5 max-w-2xl leading-relaxed text-slate-400">
-              Interested in discussing engineering, architecture or
-              opportunities? I'd be happy to connect.
-            </p>
-
-            <div class="mt-8 flex flex-wrap gap-4 text-sm">
-              <a
-                href="mailto:YOUR_EMAIL"
-                class="rounded-xl bg-white px-5 py-3 font-semibold text-slate-950 transition hover:bg-slate-200"
+            <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <div
+                class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
               >
-                Email me
-              </a>
-
-              <a
-                href="https://github.com/joshichaitanya"
-                target="_blank"
-                rel="noreferrer"
-                class="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+                <p class="text-sm font-medium text-slate-200">System Design</p>
+              </div>
+              <div
+                class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
               >
-                GitHub
-              </a>
-
-              <a
-                href="https://www.linkedin.com/in/chaitanyajoshi5"
-                target="_blank"
-                rel="noreferrer"
-                class="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+                <p class="text-sm font-medium text-slate-200">Microservices</p>
+              </div>
+              <div
+                class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
               >
-                LinkedIn
-              </a>
+                <p class="text-sm font-medium text-slate-200">
+                  Event-Driven Architecture
+                </p>
+              </div>
+              <div
+                class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+              >
+                <p class="text-sm font-medium text-slate-200">API Design</p>
+              </div>
+              <div
+                class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+              >
+                <p class="text-sm font-medium text-slate-200">
+                  Distributed Systems
+                </p>
+              </div>
+              <div
+                class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+              >
+                <p class="text-sm font-medium text-slate-200">
+                  Performance Optimization
+                </p>
+              </div>
+              <div
+                class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+              >
+                <p class="text-sm font-medium text-slate-200">
+                  Fault Tolerance
+                </p>
+              </div>
+              <div
+                class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+              >
+                <p class="text-sm font-medium text-slate-200">Scalability</p>
+              </div>
             </div>
           </div>
         </div>
@@ -455,5 +862,30 @@
         <span>Built with HTML & Tailwind CSS.</span>
       </div>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+      document.querySelectorAll('.project-toggle').forEach((button) => {
+        button.addEventListener('click', () => {
+          const card = button.closest('.project-card');
+          const isOpen = card.classList.toggle('is-open');
+          button.setAttribute('aria-expanded', String(isOpen));
+          button.querySelector('.toggle-label').textContent = isOpen
+            ? 'Hide details'
+            : 'View details';
+        });
+      });
+
+      AOS.init({
+        duration: 1500,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 80,
+      });
+
+      window.addEventListener('load', () => {
+        AOS.refresh();
+      });
+    </script>
   </body>
 </html>
