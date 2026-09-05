@@ -6,10 +6,14 @@
     <title>Distributed Pricing Platform | Chaitanya Joshi</title>
     <meta
       name="description"
-      content="Case study: a distributed, event-driven pricing platform built by Chaitanya Joshi on Node.js, AWS and DynamoDB."
+      content="Case study: a distributed, event-driven pricing platform built by Chaitanya Joshi on NodeJS, AWS and DynamoDB."
     />
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
 
     <style>
       html {
@@ -74,9 +78,60 @@
       .section-heading {
         letter-spacing: -0.03em;
       }
+
+      .metric {
+        color: rgb(147, 197, 253);
+        font-weight: 600;
+      }
+
+      .adr summary {
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .adr summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .adr summary .adr-chevron {
+        transition: transform 200ms ease;
+      }
+
+      .adr[open] summary .adr-chevron {
+        transform: rotate(180deg);
+      }
+
+      .glow-card {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .glow-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background: radial-gradient(
+          220px circle at var(--x, 50%) var(--y, 50%),
+          rgba(96, 165, 250, 0.12),
+          transparent 70%
+        );
+        transition: opacity 250ms ease;
+        pointer-events: none;
+      }
+
+      .glow-card:hover::before {
+        opacity: 1;
+      }
+
     </style>
   </head>
   <body class="min-h-screen text-slate-100 antialiased">
+    <div
+      id="reading-progress"
+      class="fixed left-0 top-0 z-[60] h-0.5 bg-blue-400 transition-[width] duration-100 ease-out"
+      style="width: 0%"
+    ></div>
     <nav class="sticky top-0 z-50 border-b border-slate-800/70 glass">
       <div
         class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4"
@@ -114,124 +169,409 @@
       </h1>
       <p class="mt-5 max-w-3xl leading-relaxed text-slate-400">
         A production-style event processing system demonstrating queues,
-        retries, idempotency, caching, observability and AWS-based
-        architecture.
+        retries, idempotency, caching, observability and AWS-based architecture.
       </p>
 
       <div class="mt-6 flex flex-wrap gap-2 text-xs text-slate-400">
-        <span class="rounded-full bg-slate-800 px-3 py-1.5">Node.js</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">NodeJS</span>
         <span class="rounded-full bg-slate-800 px-3 py-1.5">TypeScript</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">ReactJS</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">NextJS</span>
         <span class="rounded-full bg-slate-800 px-3 py-1.5">AWS</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">Lambda</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5"
+          >Step Functions</span
+        >
         <span class="rounded-full bg-slate-800 px-3 py-1.5">SQS</span>
-        <span class="rounded-full bg-slate-800 px-3 py-1.5">DynamoDB</span>
       </div>
 
-      <div class="mt-14">
-        <h2 class="text-xl font-semibold text-white">What I did</h2>
+      <div class="mt-14" data-aos="fade-up" data-aos-duration="900">
+        <h2 class="text-xl font-semibold text-white">
+          Functional Requirements
+        </h2>
         <ul
-          class="mt-5 list-disc space-y-3 pl-5 text-sm leading-relaxed text-slate-400"
+          class="mt-5 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-400"
         >
+          <li>Users or authorized services can upload data files to the system.</li>
           <li>
-            Owned the pricing service end-to-end — a distributed,
-            event-driven platform (S3, SQS, Step Functions, DynamoDB Streams)
-            processing 20K+ daily transactions and 500K international price
-            records with zero data loss.
+            Validate, normalize, and transform incoming data into a common
+            schema.
           </li>
+          <li>Persist processed data and historical versions for auditing.</li>
+          <li>Publish data-change events to downstream consumers.</li>
+          <li>Deliver events asynchronously with retry support.</li>
           <li>
-            Personally built and maintained 10+ of the platform's 20
-            microservices — including a product-search microservice on
-            Elasticsearch — provisioned via AWS CDK, working within an 8-10
-            person squad.
-          </li>
-          <li>
-            Designed and federated GraphQL schemas via Apollo Supergraph
-            across microservices, enabling unified API consumption for
-            downstream teams.
-          </li>
-          <li>
-            Spearheaded an independent cross-team initiative to migrate the
-            pricing service off 3 legacy Oracle-backed provider APIs onto
-            OpenSearch, negotiating schema changes with the owning team to
-            eliminate slow, retry-prone vendor calls.
-          </li>
-          <li>
-            Cut per-price processing time ~30% and failure rate ~5% via the
-            OpenSearch migration, and introduced Redis-based caching for
-            tax/duty calculations — together reducing monthly cloud spend for
-            the pricing platform by ~40%.
-          </li>
-          <li>
-            Established CloudWatch monitoring/alerting standards sustaining
-            99.9% uptime; enforced SonarQube quality gates, incorporated
-            AI-assisted development (Claude Code, Cursor) into the review
-            workflow, and maintained 80% Jest test coverage.
-          </li>
-          <li>
-            Identified rising security debt at a retro and proposed a weekly
-            Dependabot remediation cadence; the practice was adopted
-            org-wide, reducing per-service vulnerability count to &lt;5%.
-          </li>
-          <li>
-            Assumed full technical ownership of the project for 2–3 months
-            during the team lead's unplanned leave, then independently
-            sustained delivery through a cost-reduction restructuring.
-          </li>
-          <li>
-            Mentored 3 engineers through onboarding, pairing, and monthly 1:1
-            career guidance.
+            Automatically handle failures through retry/reprocessing
+            workflows and notify the responsible teams.
           </li>
         </ul>
       </div>
 
-      <div class="mt-14">
+      <div class="mt-14" data-aos="fade-up" data-aos-duration="900">
+        <h2 class="text-xl font-semibold text-white">
+          Non-Functional Requirements
+        </h2>
+        <ul
+          class="mt-5 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-400"
+        >
+          <li>
+            <span class="metric">Scalability</span> — support
+            <span class="metric">1M+</span> records with predictable
+            performance as data volume and processing load increase.
+          </li>
+          <li>
+            <span class="metric">Reliability</span> — durable at-least-once
+            event delivery, with idempotent processing and
+            replay/reprocessing capability.
+          </li>
+          <li>
+            <span class="metric">Resilience</span> — failure of one
+            downstream consumer must not block ingestion or processing of
+            other consumers.
+          </li>
+          <li>
+            <span class="metric">Consistency</span> — follow an
+            eventual-consistency model; downstream consumers may
+            temporarily lag but converge after successful processing.
+          </li>
+          <li>
+            <span class="metric">Fault Recovery</span> — automatically
+            retry transient failures and reprocess failed workloads,
+            minimizing manual intervention.
+          </li>
+          <li>
+            <span class="metric">Observability &amp; Alerting</span> —
+            provide centralized dashboards, health/status monitoring, and
+            differentiated alarms for system failures and abnormal
+            conditions. Route alerts to the appropriate owning teams for
+            resolution.
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-14" data-aos="fade-up" data-aos-duration="900">
+        <h2 class="text-xl font-semibold text-white">Out of Scope</h2>
+        <ul
+          class="mt-5 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-400"
+        >
+          <li>Strict ordering of updates across distributed consumers.</li>
+        </ul>
+      </div>
+
+      <div class="mt-14" data-aos="fade-up" data-aos-duration="900">
         <h2 class="text-xl font-semibold text-white">Architecture</h2>
         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-400">
-          Event-driven pipeline: price events land in S3, fan out via SQS,
-          get orchestrated through Step Functions, and settle into DynamoDB
-          with Streams triggering downstream consumers. Elasticsearch backs
-          product search; Redis caches tax/duty lookups.
+          Prices land via a pre-signed S3 upload or a scheduled third-party API
+          fetch, get enriched and saved to DynamoDB. DynamoDB Streams (CDC)
+          publish each change to an SNS topic, which fans out to per-consumer
+          SQS queues — with a dead-letter queue catching failed retries. On the
+          read path, Redis caches regional pricing enrichment and OpenSearch powers
+          product search.
         </p>
 
-        <!--
         <figure class="mt-6">
-          <img
-            src="./pricing-architecture-diagram.png"
-            alt="Distributed Pricing Platform architecture diagram"
-            class="w-full rounded-xl border border-slate-800"
-          />
+          <button
+            type="button"
+            id="diagram-open"
+            class="block w-full cursor-zoom-in rounded-xl border border-slate-800 bg-gray-200 p-4 text-left shadow-lg shadow-black/30"
+          >
+            <img
+              src="./distributed-pricing.svg"
+              alt="Distributed Pricing Platform architecture diagram"
+              loading="lazy"
+              decoding="async"
+              class="w-full rounded-md opacity-0 blur-sm transition duration-500 ease-out"
+              onload="this.classList.remove('opacity-0', 'blur-sm')"
+            />
+          </button>
           <figcaption class="mt-2 text-xs text-slate-500">
             High-level architecture: event-driven pricing pipeline across S3,
-            SQS, Step Functions and DynamoDB Streams.
+            SQS, Step Functions and DynamoDB Streams. Click to view full size.
           </figcaption>
         </figure>
-        -->
 
         <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div
-            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+            class="architecture-card glow-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
           >
             <p class="text-sm font-medium text-slate-200">
               Event-Driven Architecture
             </p>
           </div>
           <div
-            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+            class="architecture-card glow-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
           >
             <p class="text-sm font-medium text-slate-200">Microservices</p>
           </div>
           <div
-            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+            class="architecture-card glow-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
           >
-            <p class="text-sm font-medium text-slate-200">
-              Fault Tolerance
-            </p>
+            <p class="text-sm font-medium text-slate-200">Fault Tolerance</p>
           </div>
           <div
-            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+            class="architecture-card glow-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
           >
             <p class="text-sm font-medium text-slate-200">Scalability</p>
           </div>
         </div>
+      </div>
+
+      <div class="mt-14" data-aos="fade-up" data-aos-duration="900">
+        <h2 class="text-xl font-semibold text-white">
+          Architecture Decision Records
+        </h2>
+
+        <details
+          class="adr glow-card mt-5 rounded-xl border border-slate-800 bg-slate-900/50 p-5"
+        >
+          <summary class="flex items-center justify-between gap-3">
+            <h3 class="text-base font-semibold text-white">
+              Why Step Functions for price-processing orchestration?
+            </h3>
+            <svg
+              class="adr-chevron h-4 w-4 shrink-0 text-slate-400"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M5 7.5L10 12.5L15 7.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </summary>
+          <ul
+            class="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-slate-400"
+          >
+            <li>Multi-step workflow with clear state transitions.</li>
+            <li>Built-in retries/backoff and failure handling.</li>
+            <li>
+              Ability to resume/reprocess from a failed step rather than
+              restarting everything.
+            </li>
+            <li>
+              Makes long-running/asynchronous processing explicit and
+              observable.
+            </li>
+          </ul>
+          <p class="mt-3 text-sm leading-relaxed text-slate-400">
+            <span class="metric">Alternative considered:</span> Lambda
+            chaining / SQS-only orchestration.
+          </p>
+          <p class="mt-1.5 text-sm leading-relaxed text-slate-400">
+            <span class="metric">Trade-off:</span> additional orchestration
+            complexity/cost, but substantially better control over workflow
+            reliability.
+          </p>
+        </details>
+
+        <details
+          class="adr glow-card mt-5 rounded-xl border border-slate-800 bg-slate-900/50 p-5"
+        >
+          <summary class="flex items-center justify-between gap-3">
+            <h3 class="text-base font-semibold text-white">
+              Retry/DLQ and failure-recovery strategy?
+            </h3>
+            <svg
+              class="adr-chevron h-4 w-4 shrink-0 text-slate-400"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M5 7.5L10 12.5L15 7.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </summary>
+          <ul
+            class="mt-3 list-disc space-y-2.5 pl-5 text-sm leading-relaxed text-slate-400"
+          >
+            <li>
+              <span class="metric">Reprocessing/replay</span> — failed
+              messages land in a dead-letter queue instead of blocking the
+              main flow; once the root cause is fixed, they're replayed
+              from the DLQ to resume processing.
+            </li>
+            <li>
+              <span class="metric">Transient vs persistent failures</span>
+              — transient failures (timeouts, brief unavailability) get
+              automatic retries with backoff in place; failures that keep
+              recurring past a retry limit are treated as persistent and
+              routed straight to the DLQ with an alert, rather than
+              retrying forever.
+            </li>
+            <li>
+              <span class="metric">Why at-least-once delivery</span> — it
+              reduces the risk of silently dropped updates even if a
+              consumer crashes mid-processing; consumers are built
+              idempotent so the occasional duplicate delivery doesn't
+              cause duplicate side effects.
+            </li>
+          </ul>
+          <p class="mt-3 text-sm leading-relaxed text-slate-400">
+            <span class="metric">Alternative considered:</span>
+            exactly-once delivery via a distributed transaction/dedup
+            store.
+          </p>
+          <p class="mt-1.5 text-sm leading-relaxed text-slate-400">
+            <span class="metric">Trade-off:</span> exactly-once adds
+            significant coordination overhead; at-least-once with
+            idempotent consumers gets the same correctness guarantee more
+            simply.
+          </p>
+        </details>
+
+        <details
+          class="adr glow-card mt-5 rounded-xl border border-slate-800 bg-slate-900/50 p-5"
+        >
+          <summary class="flex items-center justify-between gap-3">
+            <h3 class="text-base font-semibold text-white">
+              Why SNS fan-out to per-consumer SQS queues?
+            </h3>
+            <svg
+              class="adr-chevron h-4 w-4 shrink-0 text-slate-400"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M5 7.5L10 12.5L15 7.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </summary>
+          <ul
+            class="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-slate-400"
+          >
+            <li>
+              Decouples producers from consumers — a new downstream team
+              can subscribe without touching the publisher.
+            </li>
+            <li>
+              Each consumer gets its own queue, so a slow or failing
+              consumer can't block delivery to the others.
+            </li>
+            <li>
+              Retries and backpressure are handled per-queue instead of
+              being shared across every downstream system.
+            </li>
+            <li>Keeps the system extensible as more consumers are added.</li>
+          </ul>
+          <p class="mt-3 text-sm leading-relaxed text-slate-400">
+            <span class="metric">Alternative considered:</span> direct
+            service-to-service delivery / a shared queue.
+          </p>
+          <p class="mt-1.5 text-sm leading-relaxed text-slate-400">
+            <span class="metric">Trade-off:</span> an extra pub/sub hop
+            adds a little latency versus direct chaining, but consumer
+            isolation and easy addition of new subscribers are worth it.
+          </p>
+        </details>
+      </div>
+
+      <div class="mt-14" data-aos="fade-up" data-aos-duration="900">
+        <h2 class="text-xl font-semibold text-white">APIs</h2>
+        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-400">
+          A small REST surface around uploaded price files, backing the
+          ingestion pipeline.
+        </p>
+
+        <div class="mt-5 overflow-x-auto rounded-xl border border-slate-800">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr
+                class="border-b border-slate-800 bg-slate-900/60 text-slate-300"
+              >
+                <th class="px-4 py-2.5 font-semibold">Method</th>
+                <th class="px-4 py-2.5 font-semibold">Endpoint</th>
+                <th class="px-4 py-2.5 font-semibold">Purpose</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-400">
+              <tr class="border-b border-slate-800/70">
+                <td class="whitespace-nowrap px-4 py-2.5 text-emerald-300">
+                  GET
+                </td>
+                <td class="whitespace-nowrap px-4 py-2.5 font-mono text-xs">
+                  /files
+                </td>
+                <td class="px-4 py-2.5">Get the list of uploaded files.</td>
+              </tr>
+              <tr class="border-b border-slate-800/70">
+                <td class="whitespace-nowrap px-4 py-2.5 text-emerald-300">
+                  GET
+                </td>
+                <td class="whitespace-nowrap px-4 py-2.5 font-mono text-xs">
+                  /files/:fileId
+                </td>
+                <td class="px-4 py-2.5">Get prices from a specific file.</td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap px-4 py-2.5 text-blue-300">
+                  POST
+                </td>
+                <td class="whitespace-nowrap px-4 py-2.5 font-mono text-xs">
+                  /files
+                </td>
+                <td class="px-4 py-2.5">Upload a new price file.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mt-14" data-aos="fade-up" data-aos-duration="900">
+        <h2 class="text-xl font-semibold text-white">What I did</h2>
+        <ul
+          class="mt-5 list-disc space-y-3 pl-5 text-sm leading-relaxed text-slate-400"
+        >
+          <li>
+            Owned the pricing service end-to-end — a distributed,
+            event-driven platform — spanning architecture, delivery,
+            reliability, and operational ownership.
+          </li>
+          <li>
+            Spearheaded a cross-team migration of the pricing service off
+            <span class="metric">3</span> legacy traditional RDBMS-backed provider APIs
+            onto OpenSearch, negotiating schema changes with the owning
+            team to eliminate slow, retry-prone vendor calls.
+          </li>
+          <li>
+            Cut per-price processing time <span class="metric">~30%</span> and
+            failure rate <span class="metric">~5%</span> via the OpenSearch
+            migration, and introduced Redis-based caching for regional pricing enrichment
+            calculations — contributing to a <span class="metric">~40%</span>
+            reduction in monthly cloud spend for the pricing platform.
+          </li>
+          <li>
+            Established and owned CloudWatch monitoring dashboards and
+            alerting standards sustaining <span class="metric">99.9%</span>
+            uptime; enforced SonarQube quality gates and maintained
+            <span class="metric">80%</span> Jest test coverage.
+          </li>
+          <li>
+            Identified rising security debt at a retro and proposed a weekly
+            Dependabot remediation cadence; the practice was adopted org-wide,
+            reducing per-service vulnerability count to
+            <span class="metric">&lt;5%</span>.
+          </li>
+          <li>
+            Stepped up as de facto technical lead for
+            <span class="metric">2–3</span> months during the team lead's
+            unplanned leave, taking ownership of delivery through a
+            cost-reduction restructuring.
+          </li>
+          <li>
+            Mentored <span class="metric">3</span> engineers through
+            onboarding, pairing, and ongoing career guidance.
+          </li>
+        </ul>
       </div>
 
       <a
@@ -250,5 +590,143 @@
         <span>Built with HTML & Tailwind CSS.</span>
       </div>
     </footer>
+
+    <div
+      id="diagram-modal"
+      class="fixed inset-0 z-50 hidden overflow-auto bg-black/85 p-6"
+    >
+      <div id="diagram-modal-controls" class="fixed right-6 top-6 z-[70] flex gap-2">
+        <button
+          type="button"
+          id="diagram-zoom-toggle"
+          aria-label="Zoom in/out"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-slate-900/80 text-slate-200 transition hover:border-slate-500 hover:text-white"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="9" r="6" />
+            <path d="M13.5 13.5 17 17" stroke-linecap="round" />
+            <path id="diagram-zoom-icon-path" d="M6.5 9h5M9 6.5v5" stroke-linecap="round" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          id="diagram-close"
+          aria-label="Close"
+          class="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-slate-900/80 text-slate-200 transition hover:border-slate-500 hover:text-white"
+        >
+          <svg class="h-4 w-4 transition-transform duration-200 group-hover:rotate-90" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 5l10 10M15 5 5 15" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <div id="diagram-modal-backdrop" class="flex min-h-full items-center justify-center">
+        <img
+          id="diagram-modal-img"
+          src="./distributed-pricing.svg"
+          alt="Distributed Pricing Platform architecture diagram, enlarged"
+          class="max-h-[90vh] max-w-[90vw] cursor-zoom-in rounded-2xl bg-gray-200 p-4 transition-[width,height] duration-200 ease-out"
+        />
+      </div>
+    </div>
+
+    <script>
+      const modal = document.getElementById('diagram-modal');
+      const modalImg = document.getElementById('diagram-modal-img');
+      const openBtn = document.getElementById('diagram-open');
+      const zoomToggleBtn = document.getElementById('diagram-zoom-toggle');
+      const zoomIconPath = document.getElementById('diagram-zoom-icon-path');
+      const closeBtn = document.getElementById('diagram-close');
+
+      const ZOOM_IN_ICON = 'M6.5 9h5M9 6.5v5';
+      const ZOOM_OUT_ICON = 'M6.5 9h5';
+      let isZoomed = false;
+
+      function setZoomed(zoomed) {
+        isZoomed = zoomed;
+        modalImg.classList.toggle('cursor-zoom-in', !isZoomed);
+        modalImg.classList.toggle('cursor-zoom-out', isZoomed);
+        zoomIconPath.setAttribute('d', isZoomed ? ZOOM_OUT_ICON : ZOOM_IN_ICON);
+        if (zoomed) {
+          // Scale up from whatever size it's currently rendered at (not the
+          // natural pixel size) so this works regardless of viewport/DPI —
+          // an SVG can already render larger than its natural size via
+          // max-w/max-h alone on a wide, high-resolution screen.
+          const rect = modalImg.getBoundingClientRect();
+          modalImg.style.width = `${rect.width * 1.6}px`;
+          modalImg.style.height = `${rect.height * 1.6}px`;
+          modalImg.style.maxWidth = 'none';
+          modalImg.style.maxHeight = 'none';
+        } else {
+          modalImg.style.maxWidth = '';
+          modalImg.style.maxHeight = '';
+          modalImg.style.width = '';
+          modalImg.style.height = '';
+        }
+      }
+
+      function openModal() {
+        modal.classList.remove('hidden');
+        modal.scrollTop = 0;
+        modal.scrollLeft = 0;
+        setZoomed(false);
+        document.body.classList.add('overflow-hidden');
+      }
+
+      function closeModal() {
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+
+      function toggleZoom(event) {
+        event.stopPropagation();
+        setZoomed(!isZoomed);
+      }
+
+      openBtn.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      zoomToggleBtn.addEventListener('click', toggleZoom);
+      modalImg.addEventListener('click', toggleZoom);
+
+      modal.addEventListener('click', (event) => {
+        const clickedImage = event.target.closest('#diagram-modal-img');
+        const clickedControls = event.target.closest('#diagram-modal-controls');
+        if (!clickedImage && !clickedControls) closeModal();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+          closeModal();
+        }
+      });
+
+      document.querySelectorAll('.glow-card').forEach((card) => {
+        card.addEventListener('pointermove', (event) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--x', `${event.clientX - rect.left}px`);
+          card.style.setProperty('--y', `${event.clientY - rect.top}px`);
+        });
+      });
+
+      const progressBar = document.getElementById('reading-progress');
+      const updateProgress = () => {
+        const scrollable =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+        progressBar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('resize', updateProgress);
+      updateProgress();
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 900,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 80,
+      });
+    </script>
   </body>
 </html>
