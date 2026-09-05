@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Large-Scale Crop Mapping Platform | Chaitanya Joshi</title>
+    <meta
+      name="description"
+      content="Case study: a map-heavy crop management platform led by Chaitanya Joshi on React, Leaflet.js and Node.js."
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(37, 99, 235, 0.16),
+            transparent 32rem
+          ),
+          radial-gradient(
+            circle at 85% 20%,
+            rgba(14, 165, 233, 0.1),
+            transparent 28rem
+          ),
+          #020617;
+      }
+
+      .glass {
+        background: rgba(15, 23, 42, 0.68);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      .nav-link {
+        position: relative;
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 100%;
+        height: 1px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 220ms ease;
+      }
+
+      .nav-link:hover::after {
+        transform: scaleX(1);
+      }
+
+      .architecture-card {
+        transition:
+          border-color 180ms ease,
+          background-color 180ms ease,
+          transform 180ms ease;
+      }
+
+      .architecture-card:hover {
+        border-color: rgba(96, 165, 250, 1);
+        background: rgba(30, 41, 59, 0.75);
+        transform: translateX(2px);
+      }
+
+      .section-heading {
+        letter-spacing: -0.03em;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen text-slate-100 antialiased">
+    <nav class="sticky top-0 z-50 border-b border-slate-800/70 glass">
+      <div
+        class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4"
+      >
+        <a
+          href="./index.html"
+          class="nav-link inline-flex items-center gap-2 text-sm font-semibold text-slate-300 transition hover:text-white"
+        >
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M12.5 4 6 10l6.5 6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Back to portfolio
+        </a>
+      </div>
+    </nav>
+
+    <main class="mx-auto max-w-4xl px-6 py-16">
+      <p
+        class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400"
+      >
+        Case study
+      </p>
+      <h1 class="section-heading text-3xl font-bold text-white sm:text-4xl">
+        Large-Scale Crop Mapping Platform
+      </h1>
+      <p class="mt-5 max-w-3xl leading-relaxed text-slate-400">
+        A map-heavy platform helping growers track tens of millions of plot
+        records at scale, shipped ahead of a fixed pre-spring harvest
+        deadline.
+      </p>
+
+      <div class="mt-6 flex flex-wrap gap-2 text-xs text-slate-400">
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">React</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">TypeScript</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">Node.js</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">AI</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">AWS</span>
+      </div>
+
+      <div class="mt-14">
+        <h2 class="text-xl font-semibold text-white">What I did</h2>
+        <ul
+          class="mt-5 list-disc space-y-3 pl-5 text-sm leading-relaxed text-slate-400"
+        >
+          <li>
+            Led a 5-person frontend team as most senior engineer to deliver a
+            map-heavy crop management platform ahead of a fixed pre-spring
+            harvest deadline.
+          </li>
+          <li>
+            Negotiated MVP scope with design/business stakeholders to protect
+            the timeline, and unblocked mid-level engineers via pair
+            programming and structured refinement ceremonies.
+          </li>
+          <li>
+            Co-owned the highest-risk Leaflet.js module and engineered
+            viewport-based map/list synchronization to eliminate browser
+            freezing at scale for a data-heavy mapping interface.
+          </li>
+          <li>
+            Shipped on time to 30K+ growers managing up to 1,000 plots each
+            (tens of millions of plot records), sustained through frontend
+            caching, memoization, and virtualization.
+          </li>
+          <li>
+            Raised data reliability by 25% by automating commodity pricing
+            sync via CRON jobs from third-party APIs.
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-14">
+        <h2 class="text-xl font-semibold text-white">Architecture</h2>
+        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-400">
+          A viewport-driven map/list sync layer sits between Leaflet.js and a
+          virtualized plot list, so only in-view plots hydrate at a time —
+          keeping tens of millions of records interactive without freezing
+          the browser. A Node.js BFF aggregates plot, weather and commodity
+          pricing data for the frontend.
+        </p>
+
+        <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div
+            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+          >
+            <p class="text-sm font-medium text-slate-200">
+              Viewport Virtualization
+            </p>
+          </div>
+          <div
+            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+          >
+            <p class="text-sm font-medium text-slate-200">
+              Frontend Caching
+            </p>
+          </div>
+          <div
+            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+          >
+            <p class="text-sm font-medium text-slate-200">API Design</p>
+          </div>
+          <div
+            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+          >
+            <p class="text-sm font-medium text-slate-200">Scalability</p>
+          </div>
+        </div>
+      </div>
+
+      <a
+        href="./index.html#projects"
+        class="mt-14 inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/50 px-5 py-3 font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+      >
+        ← Back to all projects
+      </a>
+    </main>
+
+    <footer class="border-t border-slate-800/80">
+      <div
+        class="mx-auto flex max-w-4xl flex-col gap-3 px-6 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <span>© 2026 Chaitanya Joshi. All rights reserved.</span>
+        <span>Built with HTML & Tailwind CSS.</span>
+      </div>
+    </footer>
+  </body>
+</html>
