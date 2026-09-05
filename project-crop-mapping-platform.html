@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Large-Scale Crop Mapping Platform | Chaitanya Joshi</title>
+    <title>Large-Scale Geospatial Data Platform | Chaitanya Joshi</title>
     <meta
       name="description"
-      content="Case study: a map-heavy crop management platform led by Chaitanya Joshi on React, Leaflet.js and Node.js."
+      content="Case study: a map-heavy, interactive data platform combining geospatial, weather and pricing data, led by Chaitanya Joshi on ReactJS, Leaflet.js and NodeJS."
     />
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
 
     <style>
       html {
@@ -74,9 +78,43 @@
       .section-heading {
         letter-spacing: -0.03em;
       }
+
+      .metric {
+        color: rgb(147, 197, 253);
+        font-weight: 600;
+      }
+
+      .glow-card {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .glow-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background: radial-gradient(
+          220px circle at var(--x, 50%) var(--y, 50%),
+          rgba(96, 165, 250, 0.12),
+          transparent 70%
+        );
+        transition: opacity 250ms ease;
+        pointer-events: none;
+      }
+
+      .glow-card:hover::before {
+        opacity: 1;
+      }
+
     </style>
   </head>
   <body class="min-h-screen text-slate-100 antialiased">
+    <div
+      id="reading-progress"
+      class="fixed left-0 top-0 z-[60] h-0.5 bg-blue-400 transition-[width] duration-100 ease-out"
+      style="width: 0%"
+    ></div>
     <nav class="sticky top-0 z-50 border-b border-slate-800/70 glass">
       <div
         class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4"
@@ -110,31 +148,31 @@
         Case study
       </p>
       <h1 class="section-heading text-3xl font-bold text-white sm:text-4xl">
-        Large-Scale Crop Mapping Platform
+        Large-Scale Geospatial Data Platform
       </h1>
       <p class="mt-5 max-w-3xl leading-relaxed text-slate-400">
-        A map-heavy platform helping growers track tens of millions of plot
-        records at scale, shipped ahead of a fixed pre-spring harvest
-        deadline.
+        A map-heavy, interactive platform helping users track tens of
+        millions of records at scale — surfacing weather and pricing data
+        alongside the map — shipped ahead of a fixed seasonal deadline.
       </p>
 
       <div class="mt-6 flex flex-wrap gap-2 text-xs text-slate-400">
-        <span class="rounded-full bg-slate-800 px-3 py-1.5">React</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">ReactJS</span>
         <span class="rounded-full bg-slate-800 px-3 py-1.5">TypeScript</span>
-        <span class="rounded-full bg-slate-800 px-3 py-1.5">Node.js</span>
-        <span class="rounded-full bg-slate-800 px-3 py-1.5">AI</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">NodeJS</span>
+        <span class="rounded-full bg-slate-800 px-3 py-1.5">PostgreSQL</span>
         <span class="rounded-full bg-slate-800 px-3 py-1.5">AWS</span>
       </div>
 
-      <div class="mt-14">
+      <div class="mt-14" data-aos="fade-up" data-aos-duration="900">
         <h2 class="text-xl font-semibold text-white">What I did</h2>
         <ul
           class="mt-5 list-disc space-y-3 pl-5 text-sm leading-relaxed text-slate-400"
         >
           <li>
-            Led a 5-person frontend team as most senior engineer to deliver a
-            map-heavy crop management platform ahead of a fixed pre-spring
-            harvest deadline.
+            Led a <span class="metric">5-person</span> frontend team as most senior engineer to deliver a
+            map-heavy, data-intensive platform ahead of a fixed seasonal
+            business deadline.
           </li>
           <li>
             Negotiated MVP scope with design/business stakeholders to protect
@@ -147,49 +185,50 @@
             freezing at scale for a data-heavy mapping interface.
           </li>
           <li>
-            Shipped on time to 30K+ growers managing up to 1,000 plots each
-            (tens of millions of plot records), sustained through frontend
-            caching, memoization, and virtualization.
+            Shipped on time to <span class="metric">10K+</span> daily active
+            users managing <span class="metric">tens of millions</span> of
+            records total, sustained through frontend caching, memoization,
+            and virtualization.
           </li>
           <li>
-            Raised data reliability by 25% by automating commodity pricing
-            sync via CRON jobs from third-party APIs.
+            Raised data reliability by <span class="metric">~25%</span> by automating third-party
+            data sync via scheduled jobs.
           </li>
         </ul>
       </div>
 
-      <div class="mt-14">
+      <div class="mt-14" data-aos="fade-up" data-aos-duration="900">
         <h2 class="text-xl font-semibold text-white">Architecture</h2>
         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-400">
           A viewport-driven map/list sync layer sits between Leaflet.js and a
           virtualized plot list, so only in-view plots hydrate at a time —
           keeping tens of millions of records interactive without freezing
-          the browser. A Node.js BFF aggregates plot, weather and commodity
+          the browser. A NodeJS BFF aggregates map, environmental and
           pricing data for the frontend.
         </p>
 
         <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div
-            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+            class="architecture-card glow-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
           >
             <p class="text-sm font-medium text-slate-200">
               Viewport Virtualization
             </p>
           </div>
           <div
-            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+            class="architecture-card glow-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
           >
             <p class="text-sm font-medium text-slate-200">
               Frontend Caching
             </p>
           </div>
           <div
-            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+            class="architecture-card glow-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
           >
             <p class="text-sm font-medium text-slate-200">API Design</p>
           </div>
           <div
-            class="architecture-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
+            class="architecture-card glow-card rounded-xl border-l-2 border-blue-400/50 bg-slate-900/40 px-4 py-3"
           >
             <p class="text-sm font-medium text-slate-200">Scalability</p>
           </div>
@@ -212,5 +251,34 @@
         <span>Built with HTML & Tailwind CSS.</span>
       </div>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+      document.querySelectorAll('.glow-card').forEach((card) => {
+        card.addEventListener('pointermove', (event) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--x', `${event.clientX - rect.left}px`);
+          card.style.setProperty('--y', `${event.clientY - rect.top}px`);
+        });
+      });
+
+      const progressBar = document.getElementById('reading-progress');
+      const updateProgress = () => {
+        const scrollable =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+        progressBar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('resize', updateProgress);
+      updateProgress();
+
+      AOS.init({
+        duration: 900,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 80,
+      });
+    </script>
   </body>
 </html>
