@@ -1,0 +1,92 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(37, 99, 235, 0.16),
+      transparent 32rem
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(14, 165, 233, 0.1),
+      transparent 28rem
+    ),
+    #020617;
+}
+
+.glass {
+  background: rgba(15, 23, 42, 0.68);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.section-heading {
+  letter-spacing: -0.03em;
+}
+
+.metric {
+  color: rgb(147, 197, 253);
+  font-weight: 600;
+}
+
+.architecture-card {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.architecture-card:hover {
+  border-color: rgba(96, 165, 250, 1);
+  background: rgba(30, 41, 59, 0.75);
+  transform: translateX(2px);
+}
+
+/* Nav underline */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms ease;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Cursor-follow glow */
+.glow-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(
+    220px circle at var(--x, 50%) var(--y, 50%),
+    rgba(96, 165, 250, 0.12),
+    transparent 70%
+  );
+  transition: opacity 250ms ease;
+  pointer-events: none;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+}

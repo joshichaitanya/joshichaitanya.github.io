@@ -14,76 +14,9 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
     />
+    <link rel="stylesheet" href="./assets/portfolio.css" />
 
     <style>
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        background:
-          radial-gradient(
-            circle at top left,
-            rgba(37, 99, 235, 0.16),
-            transparent 32rem
-          ),
-          radial-gradient(
-            circle at 85% 20%,
-            rgba(14, 165, 233, 0.1),
-            transparent 28rem
-          ),
-          #020617;
-      }
-
-      .glass {
-        background: rgba(15, 23, 42, 0.68);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-      }
-
-      .nav-link {
-        position: relative;
-      }
-
-      .nav-link::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -4px;
-        width: 100%;
-        height: 1px;
-        background: currentColor;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 220ms ease;
-      }
-
-      .nav-link:hover::after {
-        transform: scaleX(1);
-      }
-
-      .architecture-card {
-        transition:
-          border-color 180ms ease,
-          background-color 180ms ease,
-          transform 180ms ease;
-      }
-
-      .architecture-card:hover {
-        border-color: rgba(96, 165, 250, 1);
-        background: rgba(30, 41, 59, 0.75);
-        transform: translateX(2px);
-      }
-
-      .section-heading {
-        letter-spacing: -0.03em;
-      }
-
-      .metric {
-        color: rgb(147, 197, 253);
-        font-weight: 600;
-      }
-
       .adr summary {
         cursor: pointer;
         list-style: none;
@@ -100,30 +33,6 @@
       .adr[open] summary .adr-chevron {
         transform: rotate(180deg);
       }
-
-      .glow-card {
-        position: relative;
-        overflow: hidden;
-      }
-
-      .glow-card::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        background: radial-gradient(
-          220px circle at var(--x, 50%) var(--y, 50%),
-          rgba(96, 165, 250, 0.12),
-          transparent 70%
-        );
-        transition: opacity 250ms ease;
-        pointer-events: none;
-      }
-
-      .glow-card:hover::before {
-        opacity: 1;
-      }
-
     </style>
   </head>
   <body class="min-h-screen text-slate-100 antialiased">
@@ -276,7 +185,7 @@
             class="block w-full cursor-zoom-in rounded-xl border border-slate-800 bg-gray-200 p-4 text-left shadow-lg shadow-black/30"
           >
             <img
-              src="./distributed-pricing.svg"
+              src="./assets/images/distributed-pricing.svg"
               alt="Distributed Pricing Platform architecture diagram"
               loading="lazy"
               decoding="async"
@@ -502,7 +411,10 @@
                 <td class="whitespace-nowrap px-4 py-2.5 font-mono text-xs">
                   /files
                 </td>
-                <td class="px-4 py-2.5">Get the list of uploaded files.</td>
+                <td class="px-4 py-2.5">
+                  Cursor-paginated list of uploaded files with their
+                  processing status.
+                </td>
               </tr>
               <tr class="border-b border-slate-800/70">
                 <td class="whitespace-nowrap px-4 py-2.5 text-emerald-300">
@@ -511,7 +423,10 @@
                 <td class="whitespace-nowrap px-4 py-2.5 font-mono text-xs">
                   /files/:fileId
                 </td>
-                <td class="px-4 py-2.5">Get prices from a specific file.</td>
+                <td class="px-4 py-2.5">
+                  Cursor-paginated prices from a specific file,
+                  including the per-price error for any that failed.
+                </td>
               </tr>
               <tr>
                 <td class="whitespace-nowrap px-4 py-2.5 text-blue-300">
@@ -622,7 +537,7 @@
       <div id="diagram-modal-backdrop" class="flex min-h-full items-center justify-center">
         <img
           id="diagram-modal-img"
-          src="./distributed-pricing.svg"
+          src="./assets/images/distributed-pricing.svg"
           alt="Distributed Pricing Platform architecture diagram, enlarged"
           class="max-h-[90vh] max-w-[90vw] cursor-zoom-in rounded-2xl bg-gray-200 p-4 transition-[width,height] duration-200 ease-out"
         />
@@ -699,34 +614,12 @@
         }
       });
 
-      document.querySelectorAll('.glow-card').forEach((card) => {
-        card.addEventListener('pointermove', (event) => {
-          const rect = card.getBoundingClientRect();
-          card.style.setProperty('--x', `${event.clientX - rect.left}px`);
-          card.style.setProperty('--y', `${event.clientY - rect.top}px`);
-        });
-      });
-
-      const progressBar = document.getElementById('reading-progress');
-      const updateProgress = () => {
-        const scrollable =
-          document.documentElement.scrollHeight - window.innerHeight;
-        const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
-        progressBar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
-      };
-      window.addEventListener('scroll', updateProgress, { passive: true });
-      window.addEventListener('resize', updateProgress);
-      updateProgress();
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="./assets/portfolio.js"></script>
     <script>
-      AOS.init({
-        duration: 900,
-        easing: 'ease-out-cubic',
-        once: true,
-        offset: 80,
-      });
+      initAOS(900);
     </script>
   </body>
 </html>
